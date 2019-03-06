@@ -1,0 +1,19 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freshav
+  namespace: avscansvc
+spec:
+  selector:
+    matchLabels:
+      app: freshav
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: freshav
+    spec:
+      containers:
+      - name: freshav
+        image: packetchef/freshav-updater:1.0

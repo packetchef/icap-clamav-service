@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icap-scanner
+  namespace: avscansvc
+spec:
+  selector:
+    matchLabels:
+      app: icap-scanner
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: icap-scanner
+    spec:
+      containers:
+      - name: icap-scanner
+        image: packetchef/icap-clamav-server:1.0
+        ports:
+        - containerPort: 1344
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: icap-scanner
+  name: icap-scanner
+  namespace: avscansvc
+spec:
+  ports:
+    - name: icap
+      port: 1344
+      targetPort: 1344
+      protocol: TCP
+      nodePort: 31344
+  selector:
+    app: icap-scanner
+  type: NodePort
